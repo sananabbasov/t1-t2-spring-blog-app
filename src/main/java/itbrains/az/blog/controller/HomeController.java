@@ -24,7 +24,7 @@ public class HomeController {
     }
 
     @PostMapping("/create")
-    public String Create(@ModelAttribute  CategoryCreateDto categoryCreateDto)
+    public String Create(@ModelAttribute CategoryCreateDto categoryCreateDto)
     {
         categoryService.add(categoryCreateDto);
         return "Home";

@@ -18,6 +18,5 @@ public class Category {
     private String name;
 
     @OneToMany
-    @JoinColumn(name = "articles", nullable = true)
     private List<Article> articles;
 }
