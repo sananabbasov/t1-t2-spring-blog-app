@@ -13,10 +13,11 @@ import java.util.List;
 @Table(name = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     @OneToMany
+    @JoinColumn(name = "articles", nullable = true)
     private List<Article> articles;
 }

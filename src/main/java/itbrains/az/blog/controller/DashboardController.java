@@ -12,9 +12,7 @@ import itbrains.az.blog.services.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class DashboardController {
     public String addCategory(@ModelAttribute CategoryCreateDto categoryCreateDto)
     {
         categoryService.add(categoryCreateDto);
-        return "redirect: /dashboard/category";
+        return "redirect:/admin/category";
     }
 
 
@@ -81,6 +79,17 @@ public class DashboardController {
     public String articleCreate(@ModelAttribute ArticleCreateDto articleDto)
     {
         articleService.addArticle(articleDto);
-        return "redirect:/dashboard/article";
+        return "redirect:/admin/article";
+    }
+
+
+    @GetMapping("/admin/article/remove/{id}")
+    public String removeArticle(@ModelAttribute @PathVariable Long id){
+        {
+            articleService.removeArticle(id);
+            return "redirect:/admin/article";
+
+        }
+
     }
 }

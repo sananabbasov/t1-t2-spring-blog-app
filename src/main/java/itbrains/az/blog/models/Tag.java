@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,11 +15,12 @@ import java.util.List;
 @Table(name = "tags")
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
 
     @ManyToMany
-    private List<Article> articles;
+    @JoinTable(name = "article_tags", joinColumns = @JoinColumn(name = "tags", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "articles",referencedColumnName = "id"))
+    private Set<Article> article = new HashSet<>();
 }

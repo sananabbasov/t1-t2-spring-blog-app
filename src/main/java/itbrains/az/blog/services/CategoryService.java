@@ -10,4 +10,5 @@ public interface CategoryService {
     // DTO
     void add(CategoryCreateDto categoryCreateDto);
     List<CategoryDto> getAllCategories();
+
 }

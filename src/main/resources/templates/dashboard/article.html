@@ -62,7 +62,7 @@
               <td th:text="${article.viewCount}"></td>
               <td>
                 <a class="btn btn-outline-warning btn-sm">Update</a>
-                <a class="btn btn-outline-danger btn-sm">Delete</a>
+                <button th:onclick="'remove('+${article.id}+')'" class="btn btn-outline-danger btn-sm">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -73,6 +73,53 @@
 
 
 </div>
+
+
+
+
+<th:block layout:fragment="myScript">
+  <script>
+function remove(id){
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "btn btn-success",
+    cancelButton: "btn btn-danger"
+  },
+  buttonsStyling: false
+});
+swalWithBootstrapButtons.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonText: "Yes, delete it!",
+  cancelButtonText: "No, cancel!",
+  reverseButtons: true
+}).then((result) => {
+  if (result.isConfirmed) {
+    swalWithBootstrapButtons.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+    window.location="/admin/article/remove/"+id;
+  } else if (
+    /* Read more about handling dismissals below */
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire({
+      title: "Cancelled",
+      text: "Your imaginary file is safe :)",
+      icon: "error"
+    });
+  }
+});
+}
+</script>
+
+</th:block>
+
+
 </body>
 
 </html>
