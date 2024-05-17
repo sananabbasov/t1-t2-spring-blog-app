@@ -28,7 +28,9 @@ public class Article {
     private Date createdDate;
     private Date updatedDate;
     private int viewCount;
-
+    @Column(columnDefinition = "false")
+    private Boolean isDeleted;
+    private String seoUrl;
     @ManyToOne
     private Category category;
 

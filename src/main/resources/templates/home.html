@@ -30,7 +30,7 @@
 
                     <!-- Post preview-->
                     <div th:each="article :${articles}" class="post-preview">
-                        <a href="post.html">
+                            <a th:href="@{'/detail/'+${article.id}+ '/' + ${article.seoUrl}}">
                             <h2 th:text="${article.title}" class="post-title"></h2>
                             <h3 th:text="${article.subTitle}" class="post-subtitle"></h3>
                         </a>

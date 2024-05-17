@@ -3,6 +3,7 @@ package itbrains.az.blog.controller;
 
 import itbrains.az.blog.dtos.articledtos.ArticleCreateDto;
 import itbrains.az.blog.dtos.articledtos.ArticleDto;
+import itbrains.az.blog.dtos.articledtos.ArticleUpdateDto;
 import itbrains.az.blog.dtos.categorydtos.CategoryCreateDto;
 import itbrains.az.blog.dtos.categorydtos.CategoryDto;
 import itbrains.az.blog.models.Article;
@@ -91,5 +92,24 @@ public class DashboardController {
 
         }
 
+    }
+
+
+
+    @GetMapping("/admin/article/update/{id}")
+    public String updateArticle(@ModelAttribute @PathVariable Long id, Model model)
+    {
+        ArticleUpdateDto articleUpdateDto = articleService.findUpdateArticle(id);
+        List<CategoryDto> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+        model.addAttribute("article", articleUpdateDto);
+        return "dashboard/article/update";
+    }
+
+    @PostMapping("/admin/article/update")
+    public String updateArticle(@ModelAttribute ArticleUpdateDto articleUpdateDto)
+    {
+        articleService.updateArticle(articleUpdateDto);
+        return "redirect:/admin/article";
     }
 }

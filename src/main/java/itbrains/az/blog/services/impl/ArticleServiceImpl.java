@@ -1,9 +1,8 @@
 package itbrains.az.blog.services.impl;
 
 
-import itbrains.az.blog.dtos.articledtos.ArticleCreateDto;
-import itbrains.az.blog.dtos.articledtos.ArticleDto;
-import itbrains.az.blog.dtos.articledtos.ArticleHomeDto;
+import itbrains.az.blog.dtos.articledtos.*;
+import itbrains.az.blog.helpers.SeoHelper;
 import itbrains.az.blog.models.Article;
 import itbrains.az.blog.models.Category;
 import itbrains.az.blog.repositories.ArticleRepository;
@@ -39,6 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> getArticles() {
         List<ArticleDto> articleDtoList = articleRepository.findAll().stream()
+                .filter(x->x.getIsDeleted() == false)
                 .map(article -> modelMapper.map(article, ArticleDto.class))
                 .collect(Collectors.toList());
         return articleDtoList;
@@ -51,6 +51,8 @@ public class ArticleServiceImpl implements ArticleService {
             article.setUpdatedDate(new Date());
             article.setCreatedDate(new Date());
             article.setTitle(articleDto.getTitle());
+            SeoHelper seoHelper = new SeoHelper();
+            article.setSeoUrl(seoHelper.seoUrlHelper(articleDto.getTitle()));
             article.setDescription(articleDto.getDescription());
             Category category = categoryRepository.findById(articleDto.getCategoryId()).get();
             article.setCategory(category);
@@ -64,14 +66,48 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleHomeDto> getHomeArticles() {
         List<ArticleHomeDto> articleDtoList = articleRepository.findAll().stream()
+                .filter(x->x.getIsDeleted() == false)
                 .map(article -> modelMapper.map(article, ArticleHomeDto.class))
                 .collect(Collectors.toList());
         return articleDtoList;
     }
 
     @Override
+    public void updateArticle(ArticleUpdateDto articleDto) {
+        Article findArticle = articleRepository.findById(articleDto.getId()).orElseThrow();
+        Category category = categoryRepository.findById(articleDto.getCategoryId()).orElseThrow();
+        findArticle.setId(articleDto.getId());
+        findArticle.setTitle(articleDto.getTitle());
+        SeoHelper seoHelper = new SeoHelper();
+        findArticle.setSeoUrl(seoHelper.seoUrlHelper(articleDto.getTitle()));
+        findArticle.setDescription(articleDto.getDescription());
+        findArticle.setUpdatedDate(new Date());
+        findArticle.setPhotoUrl(articleDto.getPhotoUrl());
+        findArticle.setCategory(category);
+        articleRepository.saveAndFlush(findArticle);
+    }
+
+    @Override
+    public ArticleUpdateDto findUpdateArticle(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow();
+        ArticleUpdateDto articleUpdateDto = modelMapper.map(article, ArticleUpdateDto.class);
+        return articleUpdateDto;
+    }
+
+    @Override
+    public ArticleDetailDto articleDetail(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow();
+        ArticleDetailDto articleUpdateDto = modelMapper.map(article, ArticleDetailDto.class);
+        return articleUpdateDto;
+    }
+
+    @Override
     public void removeArticle(Long articleId) {
         Article article =  articleRepository.findById(articleId).orElseThrow();
-        articleRepository.delete(article);
+        article.setIsDeleted(true);
+        articleRepository.save(article);
     }
+
+
+
 }

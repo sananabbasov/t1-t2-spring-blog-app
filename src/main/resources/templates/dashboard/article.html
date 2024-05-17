@@ -22,7 +22,7 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">
-        <a href="/admin/article/create">Create article</a>
+        <a th:href="@{/admin/article/create}">Create article</a>
       </h6>
     </div>
     <div class="card-body">
@@ -61,7 +61,7 @@
               <td th:text="${article.updatedDate}"></td>
               <td th:text="${article.viewCount}"></td>
               <td>
-                <a class="btn btn-outline-warning btn-sm">Update</a>
+                <a th:href="'/admin/article/update/'+${article.id}" class="btn btn-outline-warning btn-sm">Update</a>
                 <button th:onclick="'remove('+${article.id}+')'" class="btn btn-outline-danger btn-sm">Delete</button>
               </td>
             </tr>
