@@ -11,3 +11,5 @@
 * tomcat and serverlet
 * ngnix
 * lunix
+* @Value
+* Kafka and RabbitMq

@@ -39,6 +39,13 @@ public class AuthController {
         return "redirect:login";
     }
 
+    @GetMapping("auth/confrim")
+    public String confirm(String email, String token)
+    {
+         boolean res = userService.confirmEmail(email, token);
+        return "redirect:/login";
+    }
+
 
 
 }

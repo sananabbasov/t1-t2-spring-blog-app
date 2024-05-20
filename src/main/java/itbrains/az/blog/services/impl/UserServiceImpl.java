@@ -3,6 +3,7 @@ package itbrains.az.blog.services.impl;
 import itbrains.az.blog.dtos.authdtos.RegisterDto;
 import itbrains.az.blog.models.User;
 import itbrains.az.blog.repositories.UserRepository;
+import itbrains.az.blog.services.EmailService;
 import itbrains.az.blog.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public boolean register(RegisterDto register) {
 
@@ -37,6 +41,20 @@ public class UserServiceImpl implements UserService {
         newUser.setConfirmationToken(token);
         newUser.setPassword(hashPassword);
         userRepository.save(newUser);
+        emailService.sendConfirmationEmail(register.getEmail(),token);
         return true;
+    }
+
+    @Override
+    public boolean confirmEmail(String email, String token) {
+
+        User findUser = userRepository.findByEmail(email);
+        if (findUser.getConfirmationToken().equals(token) && findUser != null)
+        {
+            findUser.setEmailConfirmed(true);
+            userRepository.saveAndFlush(findUser);
+            return true;
+        }
+        return false;
     }
 }
