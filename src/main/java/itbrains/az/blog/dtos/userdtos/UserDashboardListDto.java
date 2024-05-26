@@ -1,26 +1,21 @@
-package itbrains.az.blog.models;
+package itbrains.az.blog.dtos.userdtos;
 
 
-import jakarta.persistence.*;
+import itbrains.az.blog.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
-public class User {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDashboardListDto {
     private Long id;
-
     private String email;
     private String firstName;
     private String lastName;
     private String password;
     private Boolean emailConfirmed;
-    private String confirmationToken;
-
+    private List<Role> roles = new ArrayList<>();
 }

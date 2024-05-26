@@ -36,7 +36,9 @@ public class Article {
 
 
     @ManyToMany
-    @JoinTable(name = "article_tags", joinColumns = @JoinColumn(name = "articles", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tags",referencedColumnName = "id"))
-    private Set<Tag> tag =new HashSet();
+    @JoinTable(name = "article_tags",
+            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id",referencedColumnName = "id"))
+    private Set<Tag> tags =new HashSet();
 
 }
