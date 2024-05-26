@@ -6,10 +6,17 @@ import itbrains.az.blog.dtos.articledtos.ArticleDto;
 import itbrains.az.blog.dtos.articledtos.ArticleUpdateDto;
 import itbrains.az.blog.dtos.categorydtos.CategoryCreateDto;
 import itbrains.az.blog.dtos.categorydtos.CategoryDto;
+import itbrains.az.blog.dtos.roledtos.RoleDto;
+import itbrains.az.blog.dtos.userdtos.UserAddRoleDto;
+import itbrains.az.blog.dtos.userdtos.UserDashboardListDto;
+import itbrains.az.blog.dtos.userdtos.UserDto;
 import itbrains.az.blog.models.Article;
 import itbrains.az.blog.services.ArticleService;
 import itbrains.az.blog.services.CategoryService;
+import itbrains.az.blog.services.RoleService;
+import itbrains.az.blog.services.UserService;
 import itbrains.az.blog.services.impl.ArticleServiceImpl;
+import itbrains.az.blog.services.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,69 +30,67 @@ public class DashboardController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ArticleService articleService;
 
+
+    @Autowired
+    private RoleService roleService;
+
     @GetMapping("/admin")
-    public String index()
-    {
+    public String index() {
 
         return "/dashboard/home";
     }
 
 
     @GetMapping("/admin/category")
-    public String category(Model model)
-    {
+    public String category(Model model) {
         List<CategoryDto> categories = categoryService.getAllCategories();
-        model.addAttribute("categories",categories);
+        model.addAttribute("categories", categories);
         return "/dashboard/category";
     }
 
     @GetMapping("/admin/category/category-create")
-    public String addCategory()
-    {
+    public String addCategory() {
         return "/dashboard/category-create";
     }
 
 
     @PostMapping("/admin/category/create")
-    public String addCategory(@ModelAttribute CategoryCreateDto categoryCreateDto)
-    {
+    public String addCategory(@ModelAttribute CategoryCreateDto categoryCreateDto) {
         categoryService.add(categoryCreateDto);
         return "redirect:/admin/category";
     }
 
 
     @GetMapping("/admin/article")
-    public String articleGet(Model model)
-    {
+    public String articleGet(Model model) {
         List<ArticleDto> articles = articleService.getArticles();
         model.addAttribute("articles", articles);
         return "/dashboard/article";
     }
 
 
-
     @GetMapping("/admin/article/create")
-    public String articleCreate(Model model)
-    {
+    public String articleCreate(Model model) {
         List<CategoryDto> cateogires = categoryService.getAllCategories();
         model.addAttribute("categories", cateogires);
         return "/dashboard/article-create";
     }
 
     @PostMapping("/admin/article/create")
-    public String articleCreate(@ModelAttribute ArticleCreateDto articleDto)
-    {
+    public String articleCreate(@ModelAttribute ArticleCreateDto articleDto) {
         articleService.addArticle(articleDto);
         return "redirect:/admin/article";
     }
 
 
     @GetMapping("/admin/article/remove/{id}")
-    public String removeArticle(@ModelAttribute @PathVariable Long id){
+    public String removeArticle(@PathVariable Long id) {
         {
             articleService.removeArticle(id);
             return "redirect:/admin/article";
@@ -95,10 +100,8 @@ public class DashboardController {
     }
 
 
-
     @GetMapping("/admin/article/update/{id}")
-    public String updateArticle(@ModelAttribute @PathVariable Long id, Model model)
-    {
+    public String updateArticle(@ModelAttribute @PathVariable Long id, Model model) {
         ArticleUpdateDto articleUpdateDto = articleService.findUpdateArticle(id);
         List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
@@ -107,9 +110,34 @@ public class DashboardController {
     }
 
     @PostMapping("/admin/article/update")
-    public String updateArticle(@ModelAttribute ArticleUpdateDto articleUpdateDto)
-    {
+    public String updateArticle(@ModelAttribute ArticleUpdateDto articleUpdateDto) {
         articleService.updateArticle(articleUpdateDto);
         return "redirect:/admin/article";
+    }
+
+
+    @GetMapping("/admin/users")
+    public String getUsers(Model model) {
+        List<UserDashboardListDto> userList = userService.getDashboardUsers();
+        model.addAttribute("users", userList);
+        return "/dashboard/auth/user-list";
+    }
+
+
+    @GetMapping("/admin/users/role/{id}")
+    public String addRole(@PathVariable Long id, Model model) {
+        List<RoleDto> roles = roleService.getRoles();
+        UserDto user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        return "/dashboard/auth/user-role";
+    }
+
+
+    @PostMapping("/admin/users/addrole")
+    public String addRole(UserAddRoleDto addRoleDto)
+    {
+        userService.addRole(addRoleDto);
+        return "/dashboard/auth/user-list";
     }
 }

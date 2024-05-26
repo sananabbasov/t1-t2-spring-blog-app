@@ -8,6 +8,7 @@ import itbrains.az.blog.models.Category;
 import itbrains.az.blog.repositories.ArticleRepository;
 import itbrains.az.blog.repositories.CategoryRepository;
 import itbrains.az.blog.services.ArticleService;
+import itbrains.az.blog.services.EmailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -65,6 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleHomeDto> getHomeArticles() {
+
         List<ArticleHomeDto> articleDtoList = articleRepository.findAll().stream()
                 .filter(x->x.getIsDeleted() == false)
                 .map(article -> modelMapper.map(article, ArticleHomeDto.class))
