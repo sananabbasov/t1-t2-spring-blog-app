@@ -25,14 +25,14 @@ public class HomeController {
     private ArticleService articleService;
     @Autowired
     private CategoryService categoryService; // 123
-    @GetMapping("/")
-    public String index(Model model)
-    {
-        List<ArticleHomeDto> homeArticles =  articleService.getHomeArticles();
-        model.addAttribute("articles",homeArticles);
-        return "error";
-    }
-
+//    @GetMapping("/")
+//    public String index(Model model)
+//    {
+//        List<ArticleHomeDto> homeArticles =  articleService.getHomeArticles();
+//        model.addAttribute("articles",homeArticles);
+//        return "error";
+//    }
+//
 
     @GetMapping("/home")
     public String home(Model model)
