@@ -30,7 +30,7 @@ public class HomeController {
     {
         List<ArticleHomeDto> homeArticles =  articleService.getHomeArticles();
         model.addAttribute("articles",homeArticles);
-        return "Home";
+        return "error";
     }
 
 
@@ -39,7 +39,7 @@ public class HomeController {
     {
         List<ArticleHomeDto> homeArticles =  articleService.getHomeArticles();
         model.addAttribute("articles",homeArticles);
-        return "Home";
+        return "login";
     }
 
 
