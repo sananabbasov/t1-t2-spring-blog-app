@@ -34,7 +34,7 @@ public class Security {
         http
                 .csrf(x->x.disable())
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/admin/category/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/category/**").permitAll()
                         .requestMatchers("/admin/**").authenticated()
                         .anyRequest().permitAll()
                 )
