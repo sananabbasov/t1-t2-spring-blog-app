@@ -21,6 +21,12 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/yes")
+    public String yes()
+    {
+        return "login";
+    }
+
 
     @GetMapping("/register")
     public String register()

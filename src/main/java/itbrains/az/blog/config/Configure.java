@@ -21,7 +21,7 @@ public class Configure {
     @Bean
     public ClassLoaderTemplateResolver secondaryTemplateResolver() {
         ClassLoaderTemplateResolver secondaryTemplateResolver = new ClassLoaderTemplateResolver();
-        secondaryTemplateResolver.setPrefix("templates-2/");
+        secondaryTemplateResolver.setPrefix("/templates/");
         secondaryTemplateResolver.setSuffix(".html");
         secondaryTemplateResolver.setTemplateMode(TemplateMode.HTML);
         secondaryTemplateResolver.setCharacterEncoding("UTF-8");
