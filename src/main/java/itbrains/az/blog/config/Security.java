@@ -35,7 +35,7 @@ public class Security {
                 .csrf(x->x.disable())
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/admin/category/**").permitAll()
-                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
