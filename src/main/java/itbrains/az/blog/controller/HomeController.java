@@ -34,5 +34,14 @@ public class HomeController {
     }
 
 
+    @GetMapping("/home")
+    public String home(Model model)
+    {
+        List<ArticleHomeDto> homeArticles =  articleService.getHomeArticles();
+        model.addAttribute("articles",homeArticles);
+        return "Home";
+    }
+
+
 
 }
