@@ -34,8 +34,6 @@ public class Security {
         http
                 .csrf(x->x.disable())
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/admin/category/**").permitAll()
-                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
@@ -45,7 +43,7 @@ public class Security {
 
                 )
                 .logout(logout ->
-                        logout.logoutSuccessUrl("/login")
+                        logout.logoutSuccessUrl("/")
                 )
                 .exceptionHandling(e->e
                         .accessDeniedPage("/login")

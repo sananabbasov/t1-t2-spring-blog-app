@@ -18,16 +18,4 @@ public class Configure {
         return new ModelMapper();
     }
 
-    @Bean
-    public ClassLoaderTemplateResolver secondaryTemplateResolver() {
-        ClassLoaderTemplateResolver secondaryTemplateResolver = new ClassLoaderTemplateResolver();
-        secondaryTemplateResolver.setPrefix("/templates/");
-        secondaryTemplateResolver.setSuffix(".html");
-        secondaryTemplateResolver.setTemplateMode(TemplateMode.HTML);
-        secondaryTemplateResolver.setCharacterEncoding("UTF-8");
-        secondaryTemplateResolver.setOrder(1);
-        secondaryTemplateResolver.setCheckExistence(true);
-
-        return secondaryTemplateResolver;
-    }
 }

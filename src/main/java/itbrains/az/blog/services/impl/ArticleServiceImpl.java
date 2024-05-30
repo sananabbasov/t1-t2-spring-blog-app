@@ -55,7 +55,9 @@ public class ArticleServiceImpl implements ArticleService {
             article.setUpdatedDate(new Date());
             article.setCreatedDate(new Date());
             article.setTitle(articleDto.getTitle());
+            article.setPhotoUrl(articleDto.getPhotoUrl());
             SeoHelper seoHelper = new SeoHelper();
+            article.setIsDeleted(false);
             article.setSeoUrl(seoHelper.seoUrlHelper(articleDto.getTitle()));
             article.setDescription(articleDto.getDescription());
             Category category = categoryRepository.findById(articleDto.getCategoryId()).get();
@@ -116,3 +118,6 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 }
+
+// 08b6bb29-9de1-474a-b742-054a5db48e13production-4408573_1280.jpg
+// 08b6bb29-9de1-474a-b742-054a5db48e13production-4408573_1280.jpg

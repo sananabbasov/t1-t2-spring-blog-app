@@ -21,8 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Controller
 public class DashboardController {
@@ -40,11 +47,16 @@ public class DashboardController {
     @Autowired
     private RoleService roleService;
 
+    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
+//                                                                            /src/main/resources/static/uploads
+
+
     @GetMapping("/admin")
     public String index() {
 
         return "/dashboard/home";
     }
+
 
 
     @GetMapping("/admin/category")
@@ -83,7 +95,14 @@ public class DashboardController {
     }
 
     @PostMapping("/admin/article/create")
-    public String articleCreate(@ModelAttribute ArticleCreateDto articleDto) {
+    public String articleCreate(@ModelAttribute ArticleCreateDto articleDto, @RequestParam("image")MultipartFile image) throws IOException {
+        UUID rand = UUID.randomUUID();
+        StringBuilder fileNames = new StringBuilder();
+        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, rand+image.getOriginalFilename());
+        fileNames.append(image.getOriginalFilename());
+        Files.write(fileNameAndPath, image.getBytes());
+
+        articleDto.setPhotoUrl(rand+image.getOriginalFilename());
         articleService.addArticle(articleDto);
         return "redirect:/admin/article";
     }
