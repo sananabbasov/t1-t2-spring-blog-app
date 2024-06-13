@@ -33,6 +33,8 @@ import java.util.UUID;
 
 @Controller
 public class DashboardController {
+    final String uploadLocation = getClass().getClassLoader().getResource("static/uploads").toString();
+    final Path uploadDirectory = Paths.get(uploadLocation.substring(6, uploadLocation.length()) );
 
     @Autowired
     private CategoryService categoryService;
@@ -96,13 +98,14 @@ public class DashboardController {
 
     @PostMapping("/admin/article/create")
     public String articleCreate(@ModelAttribute ArticleCreateDto articleDto, @RequestParam("image")MultipartFile image) throws IOException {
+        if (!Files.exists(uploadDirectory)) {
+            Files.createDirectories(uploadDirectory);
+        }
         UUID rand = UUID.randomUUID();
-        StringBuilder fileNames = new StringBuilder();
-        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, rand+image.getOriginalFilename());
-        fileNames.append(image.getOriginalFilename());
-        Files.write(fileNameAndPath, image.getBytes());
+        String filename = rand + image.getOriginalFilename();
+        articleDto.setPhotoUrl("/uploads/" + filename);
 
-        articleDto.setPhotoUrl(rand+image.getOriginalFilename());
+        Files.copy(image.getInputStream(), uploadDirectory.resolve(filename));
         articleService.addArticle(articleDto);
         return "redirect:/admin/article";
     }
